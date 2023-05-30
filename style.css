@@ -4,6 +4,7 @@
     margin:0;
     padding:0;
     box-sizing: border-box;
+    
 }
 body{
     font-family: Outfit,sans-serif;
@@ -153,7 +154,21 @@ nav button:hover{
     border:1.5px solid rgb(0, 119, 255);
     background-color: transparent;
 }
-
+footer{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+}
+.result{
+    height: 40px;
+    width:120px;
+    border-radius: 15px;
+    font-weight: 700;
+    border:1.5px solid rgb(0, 119, 255);
+    background-color:rgb(0, 119, 255);
+    color: #fff;
+}
 @media(max-width:1150px){
     .header .header-paragraph{
         font-weight: 500;
@@ -199,9 +214,17 @@ nav button:hover{
         height:120px;
         line-height: 1.5rem;
     }
-}
-@media(max-width:540px){
     .header .header-paragraph{
         font-size: 1rem;
     }
+    nav div img{
+        width:40px;
+        height:40px;
+        border-radius: 50%;
+        transition: .3s ease;
+        margin-right: 15px;
+    }
+    nav{
+        padding-inline: .5rem;
+}
 }
