@@ -161,7 +161,7 @@ nav button:hover{
     }
     .card-container{
         display: grid;
-        grid-template-columns: auto ;
+        grid-template-columns: auto auto;
         margin: auto auto ;
         place-items: center;
         width: 80%;
@@ -185,6 +185,11 @@ nav button:hover{
         padding-inline: 3rem;
     }
 }
+@media(max-width:815px){
+    .card-container{
+        grid-template-columns: auto;
+    }
+}
 @media(max-width:540px){
     .vote-options{
         display: flex;
@@ -193,5 +198,10 @@ nav button:hover{
         align-items: center;
         height:120px;
         line-height: 1.5rem;
+    }
+}
+@media(max-width:540px){
+    .header .header-paragraph{
+        font-size: 1rem;
     }
 }
