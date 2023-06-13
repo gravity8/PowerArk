@@ -58,3 +58,75 @@ function useState(defaultValue) {
        console.log("Error Connecting: ", error);
      }
    };
+
+   const voteCandidate = async (event) => {
+    event.preventDefault();
+    try {
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
+      await provider.send("eth_requestAccounts", []);
+      const signer = await provider.getSigner();
+      const address = await signer.getAddress();
+      let receipt;
+      const votingContract = new ethers.Contract(
+        contractAddress,
+        ContractABI,
+        signer
+      );
+      const voterInfo = await votingContract.voters(address);
+      const hasVoted = voterInfo.anyvotes;
+      console.log(hasVoted);
+
+      if (hasVoted) {
+        console.log("Already voted");
+      } else {
+        // Process the vote
+        console.log("Voting...");
+      }
+
+      // Proceed with voting
+      const transaction = await votingContract.vote(value);
+
+      receipt = await wait(transaction);
+
+      console.log("Vote submitted successfully!");
+      enqueueSnackbar("Vote Successful", { variant: "success" });
+    } catch (error) {
+      enqueueSnackbar(error.data.message, { variant: "error" });
+      console.log("Failed, reason: ", error.data.message);
+    }
+  };
+
+  const VoteForm = () => {
+    const { enqueueSnackbar } = useSnackbar();
+    const contractAddress = "0x5CDf21c8072cDe0677e98BAD170d297C63a40cB1";
+  
+    const [value, setValue] = useState("");
+  
+    const handleInput = (event) => {
+      const inputValue = event.target.checked ? event.target.value : "";
+      setValue(inputValue);
+      console.log(inputValue);
+    };
+  
+    const winningCandidate = async () => {
+      try {
+        const provider = new ethers.providers.Web3Provider(window.ethereum);
+        await provider.send("eth_requestAccounts", []);
+        const signer = provider.getSigner();
+        const votingContract = new ethers.Contract(
+          contractAddress,
+          ContractABI,
+          signer
+        );
+        const winningName = await votingContract.winningName();
+        const convertByte = ethers.utils.parseBytes32String(winningName);
+  
+        console.log(convertByte);
+        enqueueSnackbar(convertByte + " Project Is Leading", {
+          variant: "success",
+        });
+      } catch (error) {
+        console.log("Error Message: ", error.data);
+      }
+    };
+}
