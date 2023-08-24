@@ -258,7 +258,7 @@ function useState(defaultValue) {
         console.log(winningName)
         const convertByte = ethers.utils.parseBytes32String(winningName);
   
-        console.log(convertByte);
+        alert(convertByte);
         enqueueSnackbar(convertByte + " Project Is Leading", {
           variant: "success",
         });
