@@ -51,8 +51,8 @@ function useState(defaultValue) {
        const address = await signer.getAddress();
        // use the slice method to truncate address
        const truncatedAddress = address.slice(0, 4) + ".." + address.slice(-2);
-
-       connectButton.textContent = `Connected: ${truncatedAddress}`;
+       console.log(connectButton)
+       connectButton.innerHTML = `Connected: ${truncatedAddress}`;
 
        // set signer
        setConnected(signer);
@@ -143,6 +143,7 @@ function useState(defaultValue) {
     const winningCandidate = async () => {
       try {
         const provider = new ethers.providers.Web3Provider(window.ethereum);
+        console.log(provider)
         await provider.send("eth_requestAccounts", []);
         const signer = provider.getSigner();
         const votingContract = new ethers.Contract(
@@ -161,5 +162,4 @@ function useState(defaultValue) {
         console.log("Error Message: ", error.data);
       }
     };
-
     document.getElementById("winningButton").addEventListener("click", winningCandidate);
