@@ -82,7 +82,8 @@
             governance structure of our community.</p>
         </div>
     </div>
-    <form class="vote-options" onsubmit={voteCandidate()}>
+        <div class="vote-options">
+
             <label for="proposal">Choose a Proposal</label>
             <select id="proposal" name="proposal" onchange={handleInput()}>
             <option value="OperationalExp">Operational Expenses</option>
@@ -92,11 +93,12 @@
             <option value="Hackathon">Hackathon Proposal</option>
             <option value="GovernanceTok">Governance Token</option>
             </select>
-            <input type="submit" value="Vote">
-        </form>
+            <button onclick={voteCandidate()}>Vote</button>
+        </div>
+            
     <footer>
-        <button class="result" id="winningButton" onclick="winningCandidate()">Check Election result</button>
+        <button class="result" id="winningButton" onclick={winningCandidate()}>Check Election result</button>
     </footer>
-<script src="main.js"></script>
+<script  src="main.js"></script>
 </body>
 </html>

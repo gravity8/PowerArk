@@ -1,5 +1,139 @@
-AOS.init();
 
+
+
+AOS.init();
+const ContractABI = [
+  {
+    "inputs": [
+      {
+        "internalType": "bytes32[]",
+        "name": "proposalNames",
+        "type": "bytes32[]"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "constructor"
+  },
+  {
+    "inputs": [],
+    "name": "authenticator",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "voter",
+        "type": "address"
+      }
+    ],
+    "name": "giveRightToVote",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "proposals",
+    "outputs": [
+      {
+        "internalType": "bytes32",
+        "name": "name",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "uint256",
+        "name": "voteCount",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "proposal",
+        "type": "uint256"
+      }
+    ],
+    "name": "vote",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "name": "voters",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "vote",
+        "type": "uint256"
+      },
+      {
+        "internalType": "bool",
+        "name": "anyvotes",
+        "type": "bool"
+      },
+      {
+        "internalType": "uint256",
+        "name": "value",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "winningName",
+    "outputs": [
+      {
+        "internalType": "bytes32",
+        "name": "winningName_",
+        "type": "bytes32"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "winningProposal",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "winningProposal_",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  }
+]
+// import ContractABI from "./contractABI.js";
 function useState(defaultValue) {
     let value = defaultValue
   
@@ -64,50 +198,13 @@ function useState(defaultValue) {
      }
    };
 
-   const voteCandidate = async (event) => {
-    event.preventDefault();
-    try {
-      const provider = new ethers.providers.Web3Provider(window.ethereum);
-      await provider.send("eth_requestAccounts", []);
-      const signer = await provider.getSigner();
-      const address = await signer.getAddress();
-      let receipt;
-      const votingContract = new ethers.Contract(
-        contractAddress,
-        ContractABI,
-        signer
-      );
-      const voterInfo = await votingContract.voters(address);
-      const hasVoted = voterInfo.anyvotes;
-      console.log(hasVoted);
-
-      if (hasVoted) {
-        console.log("Already voted");
-      } else {
-        // Process the vote
-        console.log("Voting...");
-      }
-
-      // Proceed with voting
-      const transaction = await votingContract.vote(value);
-
-      receipt = await wait(transaction);
-
-      console.log("Vote submitted successfully!");
-      enqueueSnackbar("Vote Successful", { variant: "success" });
-    } catch (error) {
-      enqueueSnackbar(error.data.message, { variant: "error" });
-      console.log("Failed, reason: ", error.data.message);
-    }
-  };
-
-  //The use snackbar component in js
-  function useSnackbar() {
+   //USeSNackbar component in vanilla javascript 
+   function useSnackbar() {
     const snackbarContainer = document.createElement("div");
     snackbarContainer.classList.add("snackbar-container");
     document.body.appendChild(snackbarContainer);
   
-    function showSnackbar(message, options = {}) {
+    function enqueueSnackbar(message, options = {}) {
       const snackbar = document.createElement("div");
       snackbar.classList.add("snackbar");
       snackbar.textContent = message;
@@ -124,9 +221,13 @@ function useState(defaultValue) {
     }
   
     return {
-      showSnackbar,
+      enqueueSnackbar,
     };
   }
+
+   
+
+  //The use snackbar component in js
 
   
     const { enqueueSnackbar } = useSnackbar();
@@ -134,24 +235,27 @@ function useState(defaultValue) {
   
     const [value, setValue] = useState("");
   
-    const handleInput = (event) => {
-      const inputValue = event.target.checked ? event.target.value : "";
+    const handleInput = () => {
+      const inputValue = document.querySelector("#proposal").value;
       setValue(inputValue);
       console.log(inputValue);
     };
   
     const winningCandidate = async () => {
+    
       try {
         const provider = new ethers.providers.Web3Provider(window.ethereum);
-        console.log(provider)
         await provider.send("eth_requestAccounts", []);
         const signer = provider.getSigner();
+        
         const votingContract = new ethers.Contract(
           contractAddress,
           ContractABI,
           signer
         );
+        console.log( votingContract)
         const winningName = await votingContract.winningName();
+        console.log(winningName)
         const convertByte = ethers.utils.parseBytes32String(winningName);
   
         console.log(convertByte);
@@ -162,4 +266,41 @@ function useState(defaultValue) {
         console.log("Error Message: ", error.data);
       }
     };
-    document.getElementById("winningButton").addEventListener("click", winningCandidate);
+
+    const voteCandidate = async () => {
+      try {
+        const provider = new ethers.providers.Web3Provider(window.ethereum);
+        await provider.send("eth_requestAccounts", []);
+        const signer = await provider.getSigner();
+        const address = await signer.getAddress();
+        
+        const votingContract = new ethers.Contract(
+          contractAddress,
+          ContractABI,
+          signer
+        );
+        console.log(votingContract)
+        
+        const voterInfo = await votingContract.voters(address);
+        const hasVoted = voterInfo.anyvotes;
+        console.log(hasVoted);
+  
+        if (hasVoted) {
+          console.log("Already voted");
+        } else {
+          // Process the vote
+          console.log("Voting...");
+        }
+  
+        // Proceed with voting
+        const transaction = await votingContract.vote(value);
+  
+        let receipt = await wait(transaction);
+        console.log(receipt)
+        console.log("Vote submitted successfully!");
+        enqueueSnackbar("Vote Successful", { variant: "success" });
+      } catch (error) {
+        enqueueSnackbar(error.data, { variant: "error" });
+        console.log("Failed, reason: ", error.data);
+      }
+    };
