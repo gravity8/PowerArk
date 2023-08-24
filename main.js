@@ -17,6 +17,8 @@ function useState(defaultValue) {
    // stored the states here
    const [connected, setConnected] = useState(false);
    const [address, setAddress] = useState("");
+
+   const connectButton = document.getElementById('connectButton');
  
    // a function to connect wallet
    const handleConnectMetamask = async () => {
@@ -49,6 +51,9 @@ function useState(defaultValue) {
        const address = await signer.getAddress();
        // use the slice method to truncate address
        const truncatedAddress = address.slice(0, 4) + ".." + address.slice(-2);
+
+       connectButton.textContent = `Connected: ${truncatedAddress}`;
+
        // set signer
        setConnected(signer);
        // set connected address
@@ -127,6 +132,8 @@ function useState(defaultValue) {
         });
       } catch (error) {
         console.log("Error Message: ", error.data);
+
+        document.getElementById("winningButton").addEventListener("click", winningCandidate);
       }
     };
 }
