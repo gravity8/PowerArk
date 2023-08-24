@@ -161,4 +161,5 @@ function useState(defaultValue) {
         console.log("Error Message: ", error.data);
       }
     };
+
     document.getElementById("winningButton").addEventListener("click", winningCandidate);
