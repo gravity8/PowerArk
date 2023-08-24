@@ -52,7 +52,7 @@ function useState(defaultValue) {
        // use the slice method to truncate address
        const truncatedAddress = address.slice(0, 4) + ".." + address.slice(-2);
 
-       connectButton.textContent = `Connected: ${truncatedAddress}`;
+       connectButton.innerText = `Connected: ${truncatedAddress}`;
 
        // set signer
        setConnected(signer);
