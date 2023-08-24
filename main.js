@@ -132,8 +132,7 @@ function useState(defaultValue) {
         });
       } catch (error) {
         console.log("Error Message: ", error.data);
-
-        document.getElementById("winningButton").addEventListener("click", winningCandidate);
       }
     };
+    document.getElementById("winningButton").addEventListener("click", winningCandidate);
 }
