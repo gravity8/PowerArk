@@ -52,7 +52,7 @@ function useState(defaultValue) {
        // use the slice method to truncate address
        const truncatedAddress = address.slice(0, 4) + ".." + address.slice(-2);
 
-       connectButton.innerText = `Connected: ${truncatedAddress}`;
+       connectButton.textContent = `Connected: ${truncatedAddress}`;
 
        // set signer
        setConnected(signer);
@@ -101,6 +101,34 @@ function useState(defaultValue) {
     }
   };
 
+  //The use snackbar component in js
+  function useSnackbar() {
+    const snackbarContainer = document.createElement("div");
+    snackbarContainer.classList.add("snackbar-container");
+    document.body.appendChild(snackbarContainer);
+  
+    function showSnackbar(message, options = {}) {
+      const snackbar = document.createElement("div");
+      snackbar.classList.add("snackbar");
+      snackbar.textContent = message;
+      
+      if (options.variant) {
+        snackbar.classList.add(`snackbar-${options.variant}`);
+      }
+      
+      snackbarContainer.appendChild(snackbar);
+      
+      setTimeout(() => {
+        snackbarContainer.removeChild(snackbar);
+      }, options.duration || 3000);
+    }
+  
+    return {
+      showSnackbar,
+    };
+  }
+
+  
     const { enqueueSnackbar } = useSnackbar();
     const contractAddress = "0x5CDf21c8072cDe0677e98BAD170d297C63a40cB1";
   
