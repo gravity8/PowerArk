@@ -101,7 +101,6 @@ function useState(defaultValue) {
     }
   };
 
-  const VoteForm = () => {
     const { enqueueSnackbar } = useSnackbar();
     const contractAddress = "0x5CDf21c8072cDe0677e98BAD170d297C63a40cB1";
   
@@ -135,4 +134,3 @@ function useState(defaultValue) {
       }
     };
     document.getElementById("winningButton").addEventListener("click", winningCandidate);
-}
