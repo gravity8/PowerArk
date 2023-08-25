@@ -132,7 +132,8 @@ const ContractABI = [
     "stateMutability": "view",
     "type": "function"
   }
-]
+];
+
 // import ContractABI from "./contractABI.js";
 function useState(defaultValue) {
     let value = defaultValue
@@ -231,7 +232,7 @@ function useState(defaultValue) {
 
   
     const { enqueueSnackbar } = useSnackbar();
-    const contractAddress = "0x5CDf21c8072cDe0677e98BAD170d297C63a40cB1";
+    const contractAddress = "0xFe2E3656D3b63e678E8fcdAF91632F1907ca1e8A";
   
     const [value, setValue] = useState("");
   
@@ -273,7 +274,7 @@ function useState(defaultValue) {
         await provider.send("eth_requestAccounts", []);
         const signer = await provider.getSigner();
         const address = await signer.getAddress();
-        
+        let receipt
         const votingContract = new ethers.Contract(
           contractAddress,
           ContractABI,
@@ -295,7 +296,7 @@ function useState(defaultValue) {
         // Proceed with voting
         const transaction = await votingContract.vote(value);
   
-        let receipt = await wait(transaction);
+         receipt = await wait(transaction);
         console.log(receipt)
         console.log("Vote submitted successfully!");
         enqueueSnackbar("Vote Successful", { variant: "success" });
