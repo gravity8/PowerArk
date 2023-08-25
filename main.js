@@ -2,6 +2,7 @@
 
 
 AOS.init();
+
 const ContractABI = [
   {
     "inputs": [
@@ -133,6 +134,7 @@ const ContractABI = [
     "type": "function"
   }
 ];
+
 
 // import ContractABI from "./contractABI.js";
 function useState(defaultValue) {
@@ -280,17 +282,17 @@ function useState(defaultValue) {
           ContractABI,
           signer
         );
-        console.log(votingContract)
+        
         
         const voterInfo = await votingContract.voters(address);
         const hasVoted = voterInfo.anyvotes;
         console.log(hasVoted);
   
         if (hasVoted) {
-          console.log("Already voted");
+          alert("Already voted");
         } else {
           // Process the vote
-          console.log("Voting...");
+          alert("Voting...");
         }
   
         // Proceed with voting
